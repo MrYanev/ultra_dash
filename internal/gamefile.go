@@ -15,6 +15,7 @@ func NewGame() *Game {
 //Draw is called each draw cycle
 //Here we build the visuals
 func (g *Game) Draw(screen *ebiten.Image) {
+	//Draw the map
 	for x := 0; x < gd.ScreenWidth; x++ {
 		for y := 0; y < gd.ScreenHeight; y++ {
 			tile := g.Tiles[GetIndexFromXY(x, y)]
