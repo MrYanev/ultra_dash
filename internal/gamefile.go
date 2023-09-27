@@ -26,6 +26,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	//Draw the map
 	level := g.Map.Dungeons[0].Levels[0]
 	level.DrawLevel(screen)
+	ProcessRenderables(g, level, screen)
 }
 
 // Update executes each tic.
