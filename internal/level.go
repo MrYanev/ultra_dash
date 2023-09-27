@@ -7,22 +7,17 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
-type GameData struct {
-	ScreenWidth  int
-	ScreenHeight int
-	TitleWidth   int
-	TitleHeight  int
+// Level holds the tile formation for the level
+type Level struct {
+	Tiles []MapTile
 }
 
-// Constructor to set the tile size
-func NewGameData() GameData {
-	g := GameData{
-		ScreenWidth:  80,
-		ScreenHeight: 50,
-		TitleWidth:   16,
-		TitleHeight:  16,
-	}
-	return g
+// NewLevel creates a new level
+func NewLevel() Level {
+	l := Level{}
+	tiles := l.CreateTiles()
+	l.Tiles = tiles
+	return l
 }
 
 // A structure to hold all the individual tiles and squares
@@ -35,7 +30,7 @@ type MapTile struct {
 
 // This function gets the index of the map array from given X and Y
 // tile coordinates. These coordinates are logical tiles not pixels.
-func GetIndexFromXY(x int, y int) int {
+func (level *Level) GetIndexFromXY(x int, y int) int {
 	gd := NewGameData()
 	return (y * gd.ScreenWidth) + x
 }
@@ -43,7 +38,7 @@ func GetIndexFromXY(x int, y int) int {
 // This function creates the map of tiles
 // First if handles the walls around the edges
 // Else handles the flooring tiles
-func CreateTiles() []MapTile {
+func (level *Level) CreateTiles() []MapTile {
 	gd := NewGameData()
 	tiles := make([]MapTile, 0)
 
