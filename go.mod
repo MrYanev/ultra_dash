@@ -2,7 +2,10 @@ module github.com/MrYanev/ultra_dash
 
 go 1.20
 
-require github.com/hajimehoshi/ebiten/v2 v2.6.0
+require (
+	github.com/bytearena/ecs v1.0.0
+	github.com/hajimehoshi/ebiten/v2 v2.6.0
+)
 
 require (
 	github.com/ebitengine/purego v0.5.0 // indirect
