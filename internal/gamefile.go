@@ -16,16 +16,8 @@ func NewGame() *Game {
 //Here we build the visuals
 func (g *Game) Draw(screen *ebiten.Image) {
 	//Draw the map
-	gd := NewGameData()
 	level := g.Map.Dungeons[0].Levels[0]
-	for x := 0; x < gd.ScreenWidth; x++ {
-		for y := 0; y < gd.ScreenHeight; y++ {
-			tile := level.Tiles[level.GetIndexFromXY(x, y)]
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Translate(float64(tile.PixelX), float64(tile.PixelY))
-			screen.DrawImage(tile.Image, op)
-		}
-	}
+	level.DrawLevel(screen)
 }
 
 //Update executes each tic.
