@@ -3,12 +3,12 @@ package internal
 import "github.com/hajimehoshi/ebiten/v2"
 
 type Game struct {
-	Tiles []MapTile
+	Map GameMap
 }
 
 func NewGame() *Game {
 	g := &Game{}
-	g.Tiles = CreateTiles()
+	g.Map = NewGameMap()
 	return g
 }
 
@@ -17,9 +17,10 @@ func NewGame() *Game {
 func (g *Game) Draw(screen *ebiten.Image) {
 	//Draw the map
 	gd := NewGameData()
+	level := g.Map.Dungeons[0].Levels[0]
 	for x := 0; x < gd.ScreenWidth; x++ {
 		for y := 0; y < gd.ScreenHeight; y++ {
-			tile := g.Tiles[GetIndexFromXY(x, y)]
+			tile := level.Tiles[level.GetIndexFromXY(x, y)]
 			op := &ebiten.DrawImageOptions{}
 			op.GeoM.Translate(float64(tile.PixelX), float64(tile.PixelY))
 			screen.DrawImage(tile.Image, op)
@@ -34,5 +35,6 @@ func (g *Game) Update() error {
 
 //Layout returns the screen dimensions
 func (g *Game) Layout(ScreenWidth, ScreenHeight int) (int, int) {
-	return 1280, 800
+	gd := NewGameData()
+	return gd.TitleWidth * gd.ScreenWidth, gd.TitleHeight * gd.ScreenHeight
 }
