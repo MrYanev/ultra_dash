@@ -31,6 +31,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 // Update executes each tic.
 func (g *Game) Update() error {
+	TryMovePlayer(g)
 	return nil
 }
 
