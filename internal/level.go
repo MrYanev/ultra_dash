@@ -28,6 +28,19 @@ type MapTile struct {
 	Image   *ebiten.Image
 }
 
+func (level *Level) DrawLevel(screen *ebiten.Image) {
+	//Draw the map
+	gd := NewGameData()
+	for x := 0; x < gd.ScreenWidth; x++ {
+		for y := 0; y < gd.ScreenHeight; y++ {
+			tile := level.Tiles[level.GetIndexFromXY(x, y)]
+			op := &ebiten.DrawImageOptions{}
+			op.GeoM.Translate(float64(tile.PixelX), float64(tile.PixelY))
+			screen.DrawImage(tile.Image, op)
+		}
+	}
+}
+
 // This function gets the index of the map array from given X and Y
 // tile coordinates. These coordinates are logical tiles not pixels.
 func (level *Level) GetIndexFromXY(x int, y int) int {
@@ -45,8 +58,8 @@ func (level *Level) CreateTiles() []MapTile {
 
 	for x := 0; x < gd.ScreenWidth; x++ {
 		for y := 0; y < gd.ScreenHeight; y++ {
+			index = level.GetIndexFromXY(x, y)
 			if x == 0 || x == gd.ScreenWidth-1 || y == 0 || y == gd.ScreenHeight-1 {
-				index = level.GetIndexFromXY(x, y)
 				wall, _, err := ebitenutil.NewImageFromFile("assets/wall.png")
 				if err != nil {
 					log.Fatal(err)
@@ -74,17 +87,4 @@ func (level *Level) CreateTiles() []MapTile {
 		}
 	}
 	return tiles
-}
-
-func (level *Level) DrawLevel(screen *ebiten.Image) {
-	//Draw the map
-	gd := NewGameData()
-	for x := 0; x < gd.ScreenWidth; x++ {
-		for y := 0; y < gd.ScreenHeight; y++ {
-			tile := level.Tiles[level.GetIndexFromXY(x, y)]
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Translate(float64(tile.PixelX), float64(tile.PixelY))
-			screen.DrawImage(tile.Image, op)
-		}
-	}
 }
