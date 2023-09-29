@@ -2,7 +2,8 @@ package internal
 
 //Holds all the levels
 type GameMap struct {
-	Dungeons []Dungeon
+	Dungeons     []Dungeon
+	CurrentLevel Level
 }
 
 //This function creates set of maps for the entire game
@@ -17,6 +18,6 @@ func NewGameMap() GameMap {
 	dungeons := make([]Dungeon, 0)
 	dungeons = append(dungeons, d)
 	//Add the dungeon to the Game Map
-	gm := GameMap{Dungeons: dungeons}
+	gm := GameMap{Dungeons: dungeons, CurrentLevel: l}
 	return gm
 }
