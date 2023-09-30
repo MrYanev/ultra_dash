@@ -16,8 +16,9 @@ type Level struct {
 // NewLevel creates a new level
 func NewLevel() Level {
 	l := Level{}
-	tiles := l.CreateTiles()
-	l.Tiles = tiles
+	rooms := make([]Rect, 0)
+	l.Rooms = rooms
+	l.GenerateLevelTiles()
 	return l
 }
 
@@ -87,6 +88,37 @@ func (level *Level) createRoom(room Rect) {
 				log.Fatal(err)
 			}
 			level.Tiles[index].Image = floor
+		}
+	}
+}
+
+// GenerateLevelTiles creates a new Dungeon Level Map.
+func (level *Level) GenerateLevelTiles() {
+	MIN_SIZE := 7
+	MAX_SIZE := 13
+	MAX_ROOMS := 37
+
+	gd := NewGameData()
+	tiles := level.CreateTiles()
+	level.Tiles = tiles
+
+	for idx := 0; idx < MAX_ROOMS; idx++ {
+		w := GetRandomBetween(MIN_SIZE, MAX_SIZE)
+		h := GetRandomBetween(MIN_SIZE, MAX_SIZE)
+		x := GetDiceRoll(gd.ScreenWidth-w-1) - 1
+		y := GetDiceRoll(gd.ScreenHeight-h-1) - 1
+
+		new_room := NewRect(x, y, w, h)
+		okToAdd := true
+		for _, otherRoom := range level.Rooms {
+			if new_room.Intersect(otherRoom) {
+				okToAdd = false
+				break
+			}
+		}
+		if okToAdd {
+			level.createRoom(new_room)
+			level.Rooms = append(level.Rooms, new_room)
 		}
 	}
 }

@@ -12,7 +12,7 @@ var (
 	renderable *ecs.Component
 )
 
-func InitializeWorld() (*ecs.Manager, map[string]ecs.Tag) {
+func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
 	tags := make(map[string]ecs.Tag)
 	manager := ecs.NewManager()
 
@@ -27,6 +27,8 @@ func InitializeWorld() (*ecs.Manager, map[string]ecs.Tag) {
 		log.Fatal(err)
 	}
 
+	startingRoom := startingLevel.Rooms[0]
+	x, y := startingRoom.Center()
 	//Creating a player entity which has all the structs that we
 	//created earlier, also we are asigning it with the corresponging
 	//tags
@@ -37,8 +39,8 @@ func InitializeWorld() (*ecs.Manager, map[string]ecs.Tag) {
 		}).
 		AddComponent(movable, Movable{}).
 		AddComponent(position, &Position{
-			X: 40,
-			Y: 25,
+			X: x,
+			Y: y,
 		})
 
 	//Adding a view for the player

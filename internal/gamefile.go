@@ -13,8 +13,8 @@ type Game struct {
 
 func NewGame() *Game {
 	g := &Game{}
-	world, tags := InitializeWorld()
 	g.Map = NewGameMap()
+	world, tags := InitializeWorld(g.Map.CurrentLevel)
 	g.WorldTags = tags
 	g.World = world
 	return g
