@@ -6,9 +6,11 @@ import (
 )
 
 type Game struct {
-	Map       GameMap
-	World     *ecs.Manager
-	WorldTags map[string]ecs.Tag
+	Map         GameMap
+	World       *ecs.Manager
+	WorldTags   map[string]ecs.Tag
+	Turn        TurnState
+	TurnCounter int
 }
 
 func NewGame() *Game {
@@ -17,6 +19,8 @@ func NewGame() *Game {
 	world, tags := InitializeWorld(g.Map.CurrentLevel)
 	g.WorldTags = tags
 	g.World = world
+	g.Turn = PlayerTurn
+	g.TurnCounter = 0
 	return g
 }
 
@@ -31,7 +35,13 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 // Update executes each tic.
 func (g *Game) Update() error {
-	TryMovePlayer(g)
+	g.TurnCounter++
+	if g.Turn == PlayerTurn && g.TurnCounter > 20 {
+		TryMovePlayer(g)
+	}
+
+	//Just for now
+	g.Turn = PlayerTurn
 	return nil
 }
 
