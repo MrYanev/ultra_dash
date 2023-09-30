@@ -8,7 +8,7 @@ const (
 	MonsterTurn
 )
 
-func GetNectState(state TurnState) TurnState {
+func GetNextState(state TurnState) TurnState {
 	switch state {
 	case BeforePlayerAction:
 		return PlayerTurn

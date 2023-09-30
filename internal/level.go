@@ -10,6 +10,7 @@ import (
 // Level holds the tile formation for the level
 type Level struct {
 	Tiles []MapTile
+	Rooms []Rect
 }
 
 // NewLevel creates a new level
@@ -59,32 +60,33 @@ func (level *Level) CreateTiles() []MapTile {
 	for x := 0; x < gd.ScreenWidth; x++ {
 		for y := 0; y < gd.ScreenHeight; y++ {
 			index = level.GetIndexFromXY(x, y)
-			if x == 0 || x == gd.ScreenWidth-1 || y == 0 || y == gd.ScreenHeight-1 {
-				wall, _, err := ebitenutil.NewImageFromFile("assets/wall.png")
-				if err != nil {
-					log.Fatal(err)
-				}
-				tile := MapTile{
-					PixelX:  x * gd.TitleWidth,
-					PixelY:  y * gd.TitleHeight,
-					Blocked: true,
-					Image:   wall,
-				}
-				tiles[index] = tile
-			} else {
-				floor, _, err := ebitenutil.NewImageFromFile("assets/floor.png")
-				if err != nil {
-					log.Fatal(err)
-				}
-				tile := MapTile{
-					PixelX:  x * gd.TitleWidth,
-					PixelY:  y * gd.TitleHeight,
-					Blocked: false,
-					Image:   floor,
-				}
-				tiles[index] = tile
+			wall, _, err := ebitenutil.NewImageFromFile("assets/wall.png")
+			if err != nil {
+				log.Fatal(err)
 			}
+			tile := MapTile{
+				PixelX:  x * gd.TitleWidth,
+				PixelY:  y * gd.TitleHeight,
+				Blocked: true,
+				Image:   wall,
+			}
+			tiles[index] = tile
 		}
 	}
 	return tiles
+}
+
+// A function for creating the rooms
+func (level *Level) createRoom(room Rect) {
+	for y := room.Y1 + 1; y < room.Y2; y++ {
+		for x := room.X1 + 1; x < room.X2; x++ {
+			index := level.GetIndexFromXY(x, y)
+			level.Tiles[index].Blocked = false
+			floor, _, err := ebitenutil.NewImageFromFile("assets/floor.png")
+			if err != nil {
+				log.Fatal(err)
+			}
+			level.Tiles[index].Image = floor
+		}
+	}
 }
