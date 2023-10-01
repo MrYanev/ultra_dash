@@ -189,3 +189,18 @@ func (level *Level) createVerticalTunnel(y1 int, y2 int, x int) {
 		}
 	}
 }
+
+// Checking for walls for the vision radius
+func (level Level) InBounds(x, y int) bool {
+	gd := NewGameData()
+	if x < 0 || x > gd.ScreenWidth || y < 0 || y > gd.ScreenHeight {
+		return false
+	}
+	return true
+}
+
+// TODO: Change this to check for WALL, not blocked
+func (level Level) IsOpaque(x, y int) bool {
+	idx := level.GetIndexFromXY(x, y)
+	return level.Tiles[idx].Blocked
+}
