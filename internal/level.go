@@ -27,25 +27,32 @@ func NewLevel() Level {
 
 // A structure to hold all the individual tiles and squares
 type MapTile struct {
-	PixelX  int
-	PixelY  int
-	Blocked bool
-	Image   *ebiten.Image
+	PixelX     int
+	PixelY     int
+	Blocked    bool
+	IsRevealed bool
+	Image      *ebiten.Image
 }
 
 func (level *Level) DrawLevel(screen *ebiten.Image) {
 	//Draw the map
 	//If statement to check for the visible range of the player
 	gd := NewGameData()
+
 	for x := 0; x < gd.ScreenWidth; x++ {
 		for y := 0; y < gd.ScreenHeight; y++ {
-
-			if level.PlayerVisible.IsVisible(x, y) {
-
-				tile := level.Tiles[level.GetIndexFromXY(x, y)]
+			idx := level.GetIndexFromXY(x, y)
+			tile := level.Tiles[idx]
+			isVis := level.PlayerVisible.IsVisible(x, y)
+			if isVis {
 				op := &ebiten.DrawImageOptions{}
-
 				op.GeoM.Translate(float64(tile.PixelX), float64(tile.PixelY))
+				screen.DrawImage(tile.Image, op)
+				level.Tiles[idx].IsRevealed = true
+			} else if tile.IsRevealed == true {
+				op := &ebiten.DrawImageOptions{}
+				op.GeoM.Translate(float64(tile.PixelX), float64(tile.PixelY))
+				op.ColorScale.Scale(0.8, 1, 1, 0.25)
 				screen.DrawImage(tile.Image, op)
 			}
 		}
@@ -75,10 +82,11 @@ func (level *Level) CreateTiles() []MapTile {
 				log.Fatal(err)
 			}
 			tile := MapTile{
-				PixelX:  x * gd.TitleWidth,
-				PixelY:  y * gd.TitleHeight,
-				Blocked: true,
-				Image:   wall,
+				PixelX:     x * gd.TitleWidth,
+				PixelY:     y * gd.TitleHeight,
+				Blocked:    true,
+				Image:      wall,
+				IsRevealed: false,
 			}
 			tiles[index] = tile
 		}
