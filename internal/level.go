@@ -39,9 +39,12 @@ func (level *Level) DrawLevel(screen *ebiten.Image) {
 	gd := NewGameData()
 	for x := 0; x < gd.ScreenWidth; x++ {
 		for y := 0; y < gd.ScreenHeight; y++ {
+
 			if level.PlayerVisible.IsVisible(x, y) {
+
 				tile := level.Tiles[level.GetIndexFromXY(x, y)]
 				op := &ebiten.DrawImageOptions{}
+
 				op.GeoM.Translate(float64(tile.PixelX), float64(tile.PixelY))
 				screen.DrawImage(tile.Image, op)
 			}
@@ -100,23 +103,24 @@ func (level *Level) createRoom(room Rect) {
 
 // GenerateLevelTiles creates a new Dungeon Level Map.
 func (level *Level) GenerateLevelTiles() {
-	MIN_SIZE := 5
+	MIN_SIZE := 6
 	MAX_SIZE := 10
 	MAX_ROOMS := 30
-	contains_rooms := false
 
 	gd := NewGameData()
 	tiles := level.CreateTiles()
 	level.Tiles = tiles
+	contains_rooms := false
 
 	for idx := 0; idx < MAX_ROOMS; idx++ {
 		w := GetRandomBetween(MIN_SIZE, MAX_SIZE)
 		h := GetRandomBetween(MIN_SIZE, MAX_SIZE)
 		x := GetDiceRoll(gd.ScreenWidth - w - 1)
 		y := GetDiceRoll(gd.ScreenHeight - h - 1)
-
 		new_room := NewRect(x, y, w, h)
+
 		okToAdd := true
+
 		for _, otherRoom := range level.Rooms {
 			if new_room.Intersect(otherRoom) {
 				okToAdd = false
@@ -125,26 +129,26 @@ func (level *Level) GenerateLevelTiles() {
 		}
 		if okToAdd {
 			level.createRoom(new_room)
-			if len(level.Rooms) == 0 {
-				if contains_rooms {
-					newX, newY := new_room.Center()
-					prevX, prevY := level.Rooms[len(level.Rooms)-1].Center()
+			if contains_rooms {
+				newX, newY := new_room.Center()
+				prevX, prevY := level.Rooms[len(level.Rooms)-1].Center()
+				coinflip := GetDiceRoll(2)
+				if coinflip == 2 {
+					level.createHorizontalTunnel(prevX, newX, prevY)
+					level.createVerticalTunnel(prevY, newY, newX)
 
-					coinflip := GetDiceRoll(2)
-
-					if coinflip == 2 {
-						level.createHorizontalTunnel(prevX, newX, prevY)
-						level.createVerticalTunnel(prevY, newY, newX)
-					} else {
-						level.createHorizontalTunnel(prevX, newX, newY)
-						level.createVerticalTunnel(prevY, newY, prevX)
-					}
+				} else {
+					level.createHorizontalTunnel(prevX, newX, newY)
+					level.createVerticalTunnel(prevY, newY, prevX)
 				}
-				level.Rooms = append(level.Rooms, new_room)
-				contains_rooms = true
+
 			}
+
+			level.Rooms = append(level.Rooms, new_room)
+			contains_rooms = true
 		}
 	}
+
 }
 
 // Max returns the larger of x or y.
