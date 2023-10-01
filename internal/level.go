@@ -5,12 +5,14 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/norendren/go-fov/fov"
 )
 
 // Level holds the tile formation for the level
 type Level struct {
-	Tiles []MapTile
-	Rooms []Rect
+	Tiles         []MapTile
+	Rooms         []Rect
+	PlayerVisible *fov.View
 }
 
 // NewLevel creates a new level
@@ -19,6 +21,7 @@ func NewLevel() Level {
 	rooms := make([]Rect, 0)
 	l.Rooms = rooms
 	l.GenerateLevelTiles()
+	l.PlayerVisible = fov.New()
 	return l
 }
 
@@ -32,13 +35,16 @@ type MapTile struct {
 
 func (level *Level) DrawLevel(screen *ebiten.Image) {
 	//Draw the map
+	//If statement to check for the visible range of the player
 	gd := NewGameData()
 	for x := 0; x < gd.ScreenWidth; x++ {
 		for y := 0; y < gd.ScreenHeight; y++ {
-			tile := level.Tiles[level.GetIndexFromXY(x, y)]
-			op := &ebiten.DrawImageOptions{}
-			op.GeoM.Translate(float64(tile.PixelX), float64(tile.PixelY))
-			screen.DrawImage(tile.Image, op)
+			if level.PlayerVisible.IsVisible(x, y) {
+				tile := level.Tiles[level.GetIndexFromXY(x, y)]
+				op := &ebiten.DrawImageOptions{}
+				op.GeoM.Translate(float64(tile.PixelX), float64(tile.PixelY))
+				screen.DrawImage(tile.Image, op)
+			}
 		}
 	}
 }
