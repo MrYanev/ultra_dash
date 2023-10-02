@@ -6,6 +6,7 @@ type Player struct {
 }
 
 type Monster struct {
+	Name string
 }
 
 type Position struct {

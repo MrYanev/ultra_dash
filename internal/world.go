@@ -10,6 +10,7 @@ import (
 var (
 	position   *ecs.Component
 	renderable *ecs.Component
+	monster    *ecs.Component
 )
 
 func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
@@ -54,7 +55,9 @@ func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
 		if room.X1 != startingRoom.X1 {
 			mX, mY := room.Center()
 			manager.NewEntity().
-				AddComponent(monster, Monster{}).
+				AddComponent(monster, &Monster{
+					Name: "Skeleton",
+				}).
 				AddComponent(renderable, &Renderable{
 					Image: monsterImg,
 				}).
@@ -73,6 +76,10 @@ func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
 	//And where each should be (NB!!!)
 	renderables := ecs.BuildTag(renderable, position)
 	tags["renderables"] = renderables
+
+	//Adding a view for monsters for faster access
+	monsters := ecs.BuildTag(monster, position)
+	tags["monsters"] = monsters
 
 	return manager, tags
 }
