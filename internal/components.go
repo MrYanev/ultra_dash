@@ -1,6 +1,10 @@
 package internal
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"math"
+
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 type Player struct {
 }
@@ -19,4 +23,10 @@ type Renderable struct {
 }
 
 type Movable struct {
+}
+
+func (p *Position) GetManhattanDistance(other *Position) int {
+	xDist := math.Abs(float64(p.X - other.X))
+	yDist := math.Abs(float64(p.Y - other.Y))
+	return int(xDist) + int(yDist)
 }

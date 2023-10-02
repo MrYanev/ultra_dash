@@ -17,7 +17,7 @@ const (
 
 // Level holds the tile formation for the level
 type Level struct {
-	Tiles         []MapTile
+	Tiles         []*MapTile
 	Rooms         []Rect
 	PlayerVisible *fov.View
 }
@@ -77,9 +77,9 @@ func (level *Level) GetIndexFromXY(x int, y int) int {
 // This function creates the map of tiles
 // First if handles the walls around the edges
 // Else handles the flooring tiles
-func (level *Level) CreateTiles() []MapTile {
+func (level *Level) CreateTiles() []*MapTile {
 	gd := NewGameData()
-	tiles := make([]MapTile, gd.ScreenHeight*gd.ScreenWidth)
+	tiles := make([]*MapTile, gd.ScreenHeight*gd.ScreenWidth)
 	index := 0
 
 	for x := 0; x < gd.ScreenWidth; x++ {
@@ -97,7 +97,7 @@ func (level *Level) CreateTiles() []MapTile {
 				IsRevealed: false,
 				TileType:   WALL,
 			}
-			tiles[index] = tile
+			tiles[index] = &tile
 		}
 	}
 	return tiles
