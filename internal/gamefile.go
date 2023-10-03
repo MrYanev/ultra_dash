@@ -37,7 +37,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 func (g *Game) Update() error {
 	g.TurnCounter++
 	if g.Turn == PlayerTurn && g.TurnCounter > 20 {
-		TryMovePlayer(g)
+		TakePlayerAction(g)
 	}
 
 	if g.Turn == MonsterTurn {
