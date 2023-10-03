@@ -3,8 +3,8 @@ package internal
 type GameData struct {
 	ScreenWidth  int
 	ScreenHeight int
-	TitleWidth   int
-	TitleHeight  int
+	TileWidth    int
+	TileHeight   int
 	UIHeight     int
 }
 
@@ -12,10 +12,11 @@ type GameData struct {
 func NewGameData() GameData {
 	g := GameData{
 		ScreenWidth:  80,
-		ScreenHeight: 50,
-		TitleWidth:   16,
-		TitleHeight:  16,
+		ScreenHeight: 60,
+		TileWidth:    16,
+		TileHeight:   16,
 		UIHeight:     10,
 	}
+
 	return g
 }

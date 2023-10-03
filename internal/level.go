@@ -110,8 +110,8 @@ func (level *Level) CreateTiles() []*MapTile {
 			index = level.GetIndexFromXY(x, y)
 
 			tile := MapTile{
-				PixelX:     x * gd.TitleWidth,
-				PixelY:     y * gd.TitleHeight,
+				PixelX:     x * gd.TileWidth,
+				PixelY:     y * gd.TileHeight,
 				Blocked:    true,
 				Image:      wall,
 				IsRevealed: false,

@@ -27,10 +27,11 @@ func NewGame() *Game {
 // Draw is called each draw cycle
 // Here we build the visuals
 func (g *Game) Draw(screen *ebiten.Image) {
-	//Draw the map
+	//Draw the Map
 	level := g.Map.CurrentLevel
 	level.DrawLevel(screen)
 	ProcessRenderables(g, level, screen)
+	ProcessUserLog(g, screen)
 }
 
 // Update executes each tic.
@@ -49,5 +50,5 @@ func (g *Game) Update() error {
 // Layout returns the screen dimensions
 func (g *Game) Layout(ScreenWidth, ScreenHeight int) (int, int) {
 	gd := NewGameData()
-	return gd.TitleWidth * gd.ScreenWidth, gd.TitleHeight * gd.ScreenHeight
+	return gd.TileWidth * gd.ScreenWidth, gd.TileHeight * gd.ScreenHeight
 }
