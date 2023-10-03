@@ -60,7 +60,7 @@ func newNode(parent *node, position *Position) *node {
 
 // Equality function
 func (n *node) isEqual(other *node) bool {
-	return (n.Position.X == other.Position.X && n.Position.Y == other.Position.Y)
+	return n.Position.IsEqual(other.Position)
 }
 
 // GetPath takes a level, the starting position and an ending position (the goal) and returns
