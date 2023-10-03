@@ -76,7 +76,7 @@ func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
 		}).
 		AddComponent(armor, &Armor{
 			Name:       "Obsidian Armor",
-			Defense:    9,
+			Defense:    7,
 			ArmorClass: 13,
 		}).
 		AddComponent(userMessage, &UserMessage{
@@ -111,7 +111,7 @@ func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
 					AddComponent(meleeWeapon, &MeleeWeapon{
 						Name:          "Machete",
 						MinimumDamage: 4,
-						MaximumDamage: 8,
+						MaximumDamage: 11,
 						ToHitBonus:    1,
 					}).
 					AddComponent(armor, &Armor{
@@ -142,7 +142,7 @@ func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
 					AddComponent(meleeWeapon, &MeleeWeapon{
 						Name:          "Short Sword",
 						MinimumDamage: 3,
-						MaximumDamage: 7,
+						MaximumDamage: 10,
 						ToHitBonus:    0,
 					}).
 					AddComponent(armor, &Armor{
