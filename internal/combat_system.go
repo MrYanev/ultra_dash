@@ -46,6 +46,10 @@ func AttackSystem(g *Game, attackerPosition *Position, defenderPosition *Positio
 	defenderMessage := defender.Components[userMessage].(*UserMessage)
 	attackerMessage := attacker.Components[userMessage].(*UserMessage)
 
+	//if the attacker is dead, don't let them attackerWeapon
+	if attacker.Components[health].(*Health).CurrentHealth <= 0 {
+		return
+	}
 	//Roll a dice to decide the hit
 	toHitRoll := GetDiceRoll(10)
 	if toHitRoll+attackerWeapon.ToHitBonus > defenderArmor.ArmorClass {
