@@ -15,6 +15,7 @@ var (
 	meleeWeapon *ecs.Component
 	armor       *ecs.Component
 	name        *ecs.Component
+	userMessage *ecs.Component
 )
 
 func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
@@ -30,6 +31,7 @@ func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
 	meleeWeapon = manager.NewComponent()
 	armor = manager.NewComponent()
 	name = manager.NewComponent()
+	userMessage = manager.NewComponent()
 
 	//Adding the image for the player
 	playerImg, _, err := ebitenutil.NewImageFromFile("assets/player.png")
@@ -72,6 +74,11 @@ func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
 			Defense:    1,
 			ArmorClass: 1,
 		}).
+		AddComponent(userMessage, &UserMessage{
+			AttackMessage:    "",
+			DeadMessage:      "",
+			GameStateMessage: "",
+		}).
 		AddComponent(name, &Name{Label: "Player"})
 
 	//Add a Monster in each room except the player's room
@@ -102,13 +109,18 @@ func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
 					Defense:    3,
 					ArmorClass: 4,
 				}).
+				AddComponent(userMessage, &UserMessage{
+					AttackMessage:    "",
+					DeadMessage:      "",
+					GameStateMessage: "",
+				}).
 				AddComponent(name, &Name{Label: "Skeleton"})
 
 		}
 	}
 
 	//Adding a view for the player
-	players := ecs.BuildTag(player, position, health, meleeWeapon, armor, name)
+	players := ecs.BuildTag(player, position, health, meleeWeapon, armor, name, userMessage)
 	tags["players"] = players
 
 	//Adding a view for all rendable objects in the game
@@ -117,8 +129,11 @@ func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
 	tags["renderables"] = renderables
 
 	//Adding a view for monsters for faster access
-	monsters := ecs.BuildTag(monster, position, health, meleeWeapon, armor, name)
+	monsters := ecs.BuildTag(monster, position, health, meleeWeapon, armor, name, userMessage)
 	tags["monsters"] = monsters
+
+	messengers := ecs.BuildTag(userMessage)
+	tags["messengers"] = messengers
 
 	return manager, tags
 }
