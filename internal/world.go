@@ -95,14 +95,14 @@ func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
 					Y: mY,
 				}).
 				AddComponent(health, &Health{
-					MaxHealth:     10,
-					CurrentHealth: 10,
+					MaxHealth:     15,
+					CurrentHealth: 15,
 				}).
 				AddComponent(meleeWeapon, &MeleeWeapon{
 					Name:          "Short Sword",
 					MinimumDamage: 2,
-					MaximumDamage: 6,
-					ToHitBonus:    0,
+					MaximumDamage: 7,
+					ToHitBonus:    1,
 				}).
 				AddComponent(armor, &Armor{
 					Name:       "Bone",
