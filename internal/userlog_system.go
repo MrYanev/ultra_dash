@@ -82,7 +82,7 @@ func ProcessUserLog(g *Game, screen *ebiten.Image) {
 	for _, msg := range lastText {
 		if msg != "" {
 			text.Draw(screen, msg, mplusNormalFont, fontX, fontY, color.White)
-			fontY += 16
+			fontY += 24
 		}
 	}
 
