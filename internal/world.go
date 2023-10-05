@@ -75,9 +75,9 @@ func InitializeWorld(startingLevel Level) (*ecs.Manager, map[string]ecs.Tag) {
 			ToHitBonus:    2,
 		}).
 		AddComponent(armor, &Armor{
-			Name:       "Obsidian Armor",
+			Name:       "Silver Armor",
 			Defense:    7,
-			ArmorClass: 13,
+			ArmorClass: 3,
 		}).
 		AddComponent(userMessage, &UserMessage{
 			AttackMessage:    "",
