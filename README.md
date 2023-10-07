@@ -3,5 +3,5 @@
 
  Based on Roguelike tutorial
 
-Dungeon game made for practicing GO and Ebiten
+Dungeon game made for practicing GO and Ebiten.
 
